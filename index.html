@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgroVet Pharma</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',sans-serif;}
+
+body{background:#0a0a0a;color:white;overflow-x:hidden;}
+
+/* Loading Screen */
+#loader{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:#0a0a0a;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+  flex-direction:column;
+  transition:opacity 0.6s ease, visibility 0.6s;
+}
+
+/* لما يختفي */
+#loader.hide{
+  opacity:0;
+  visibility:hidden;
+}
+
+/* النص */
+.loader-text{
+  color:#00ffcc;
+  font-size:30px;
+  font-weight:bold;
+  letter-spacing:2px;
+  animation:pulse 1.5s infinite;
+  text-shadow:0 0 10px #00ffcc66;
+}
+
+/* خط تحت متحرك */
+.loader-bar{
+  width:120px;
+  height:3px;
+  background:#111;
+  margin-top:15px;
+  border-radius:10px;
+  overflow:hidden;
+  position:relative;
+}
+
+.loader-bar::after{
+  content:"";
+  position:absolute;
+  width:40%;
+  height:100%;
+  background:#00ffcc;
+  animation:loading 1.2s linear infinite;
+  border-radius:10px;
+}
+
+@keyframes loading{
+  0%{left:-40%;}
+  100%{left:100%;}
+}
+
+/* نبض النص */
+@keyframes pulse{
+  0%{opacity:0.3;}
+  50%{opacity:1;}
+  100%{opacity:0.3;}
+}
+
+/* خلفية متحركة */
+body::before{
+  content:"";
+  position:fixed;
+  width:200%;
+  height:200%;
+  background:radial-gradient(circle,#00ffcc22,transparent 40%);
+  animation:moveBg 14s linear infinite;
+  z-index:-1;
+}
+
+@keyframes moveBg{
+  0%{transform:translate(0,0);}
+  50%{transform:translate(-25%,-25%);}
+  100%{transform:translate(0,0);}
+}
+  
+
+/* NAVBAR */
+nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 30px;
+  background:rgba(0,0,0,0.75);
+  backdrop-filter:blur(12px);
+  position:fixed;
+  width:100%;
+  top:0;
+  z-index:1000;
+  transition:0.4s;
+  border-bottom:1px solid #00ffcc22;
+}
+
+nav.hide{
+  transform:translateY(-100%);
+}
+
+/* اللوجو */
+.logo{
+  color:#00ffcc;
+  font-size:24px;
+  font-weight:bold;
+  letter-spacing:1px;
+  animation:glow 2s infinite alternate;
+}
+
+@keyframes glow{
+  from{ text-shadow:0 0 5px #00ffcc; }
+  to{ text-shadow:0 0 20px #00ffcc; }
+}
+
+/* القائمة */
+.menu{
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+
+.menu a{
+  position:relative;
+  color:white;
+  text-decoration:none;
+  font-size:15px;
+  padding:5px 8px;
+  transition:0.3s;
+}
+
+/* خط تحت عند hover */
+.menu a::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-5px;
+  width:0%;
+  height:2px;
+  background:#00ffcc;
+  transition:0.3s;
+}
+
+.menu a:hover{
+  color:#00ffcc;
+}
+
+.menu a:hover::after{
+  width:100%;
+}
+
+/* زر موبايل */
+.menu-btn{
+  display:none;
+  font-size:24px;
+  cursor:pointer;
+  color:#00ffcc;
+}
+
+/* موبايل */
+@media(max-width:768px){
+
+  .menu{
+    position:absolute;
+    top:70px;
+    right:0;
+    width:100%;
+    background:#111;
+    flex-direction:column;
+    align-items:center;
+    gap:0;
+    display:none;
+    border-top:1px solid #00ffcc22;
+  }
+
+  .menu a{
+    width:100%;
+    padding:15px;
+    border-bottom:1px solid #222;
+  }
+
+  .menu a::after{
+    display:none;
+  }
+
+  .menu-btn{
+    display:block;
+  }
+}
+  
+
+/* HERO */
+.hero{
+  padding-top:90px;
+  text-align:center;
+  position:relative;
+}
+
+/* البانر */
+.banner{
+  height:240px;
+  background:url('banner.png') center/cover no-repeat;
+  position:relative;
+  border-bottom:1px solid #00ffcc33;
+}
+
+/* طبقة تغميق + تأثير */
+.banner::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to bottom,transparent,#0a0a0a);
+}
+
+/* الصورة */
+.avatar{
+  width:140px;
+  height:140px;
+  border-radius:50%;
+  border:4px solid #00ffcc;
+  position:absolute;
+  bottom:-70px;
+  left:50%;
+  transform:translateX(-50%);
+  background:url('avatar.png') center/cover no-repeat;
+  box-shadow:0 0 30px #00ffcc;
+  z-index:2;
+  transition:0.4s;
+}
+
+/* تأثير عند المرور */
+.avatar:hover{
+  transform:translateX(-50%) scale(1.05);
+  box-shadow:0 0 40px #00ffcc;
+}
+
+/* المحتوى */
+.hero-content{
+  margin-top:100px;
+  padding:20px;
+}
+
+/* العنوان */
+.hero h2{
+  font-size:44px;
+  color:#00ffcc;
+  text-shadow:0 0 10px #00ffcc66;
+}
+
+/* الوصف */
+.hero p{
+  margin-top:10px;
+  color:#ccc;
+  font-size:15px;
+}
+
+/* زر */
+.btn{
+  margin-top:25px;
+  display:inline-block;
+  padding:12px 35px;
+  background:linear-gradient(135deg,#00ffcc,#00ccaa);
+  color:black;
+  border-radius:30px;
+  text-decoration:none;
+  transition:0.3s;
+  font-weight:bold;
+}
+
+/* Hover الزر */
+.btn:hover{
+  transform:translateY(-3px) scale(1.05);
+  box-shadow:0 0 20px #00ffccaa;
+}
+
+/* موبايل */
+@media(max-width:768px){
+  .banner{
+    height:180px;
+  }
+
+  .avatar{
+    width:110px;
+    height:110px;
+    bottom:-55px;
+  }
+
+  .hero h2{
+    font-size:30px;
+  }
+}
+  
+
+/* Sections */
+section{
+  padding:90px 20px;
+  text-align:center;
+  max-width:1200px;
+  margin:auto;
+}
+
+/* العنوان */
+.section-title{
+  font-size:34px;
+  margin-bottom:40px;
+  color:#00ffcc;
+  position:relative;
+  display:inline-block;
+}
+
+/* خط تحت العنوان */
+.section-title::after{
+  content:"";
+  display:block;
+  width:60%;
+  height:3px;
+  background:linear-gradient(90deg,transparent,#00ffcc,transparent);
+  margin:10px auto 0;
+  border-radius:10px;
+}
+  
+
+/* Cards */
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:25px;
+  margin-top:20px;
+}
+
+.card{
+  background:linear-gradient(145deg,#111,#0a0a0a);
+  padding:25px;
+  border-radius:18px;
+  transition:0.35s;
+  border:1px solid #00ffcc22;
+  position:relative;
+  overflow:hidden;
+}
+
+.card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(120deg,transparent,#00ffcc22,transparent);
+  opacity:0;
+  transition:0.4s;
+}
+
+.card:hover::before{
+  opacity:1;
+}
+
+.card:hover{
+  transform:translateY(-8px) scale(1.03);
+  border-color:#00ffcc;
+  box-shadow:0 0 30px #00ffcc33;
+}
+
+/* DOCTORS */
+.doctors{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:30px;
+  margin-top:20px;
+}
+
+.doctor{
+  background:linear-gradient(145deg,#111,#0a0a0a);
+  padding:25px;
+  border-radius:20px;
+  transition:0.35s;
+  border:1px solid #00ffcc22;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+
+.doctor::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(120deg,transparent,#00ffcc22,transparent);
+  opacity:0;
+  transition:0.4s;
+}
+
+.doctor:hover::before{
+  opacity:1;
+}
+
+.doctor:hover{
+  transform:translateY(-10px) scale(1.03);
+  box-shadow:0 0 30px #00ffcc33;
+  border-color:#00ffcc;
+}
+
+.doctor img{
+  width:110px;
+  height:110px;
+  border-radius:50%;
+  border:3px solid #00ffcc;
+  object-fit:cover;
+  margin-bottom:10px;
+  box-shadow:0 0 15px #00ffcc44;
+}
+
+.doctor h3{
+  margin-top:10px;
+  font-size:18px;
+}
+
+.doctor p{
+  color:#aaa;
+  font-size:14px;
+  margin-top:6px;
+}
+  
+
+/* CONTACT */
+.contact-icons a{
+margin:10px;
+font-size:22px;
+color:white;
+transition:.3s;
+display:inline-block;
+}
+
+.contact-icons a:hover{
+color:#00ffcc;
+transform:scale(1.2);
+}
+
+/* Animation scroll */
+.hidden{
+opacity:0;
+transform:translateY(50px);
+transition:1s;
+}
+
+.show{
+opacity:1;
+transform:translateY(0);
+}
+
+/* Footer */
+footer{
+text-align:center;
+padding:20px;
+background:#111;
+border-top:1px solid #00ffcc;
+}
+
+/* موبايل */
+@media(max-width:768px){
+
+.menu{
+position:absolute;
+top:60px;
+right:0;
+background:#111;
+width:100%;
+flex-direction:column;
+display:none;
+}
+
+.menu a{
+padding:15px;
+border-top:1px solid #222;
+}
+
+.menu-btn{
+display:block;
+}
+
+.hero h2{
+font-size:30px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <i class="fas fa-paw loader-icon"></i>
+  <div class="loader-text">اجروفيت فارما</div>
+  <div class="loader-bar"></div>
+</div>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+
+  <div class="logo">
+    <i class="fas fa-leaf"></i> AgroVet Pharma
+  </div>
+
+  <div class="menu" id="menu">
+    <a href="#"><i class="fas fa-home"></i> الرئيسية</a>
+    <a href="#about"><i class="fas fa-info-circle"></i> عن الشركة</a>
+    <a href="#services"><i class="fas fa-briefcase-medical"></i> الخدمات</a>
+    <a href="#doctors"><i class="fas fa-user-md"></i> الدكاترة</a>
+    <a href="#contact"><i class="fas fa-phone-alt"></i> تواصل</a>
+  </div>
+
+  <i class="fas fa-bars menu-btn" onclick="toggleMenu()"></i>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+
+  <div class="banner">
+    <div class="avatar"></div>
+  </div>
+
+  <div class="hero-content">
+    <h2><i class="fas fa-leaf"></i> اجروفيت فارما</h2>
+
+    <p>
+      <i class="fas fa-shield-alt"></i>
+      الريادة في توزيع الأدوية البيطرية بأعلى جودة وموثوقية
+    </p>
+
+    <a href="#contact" class="btn">
+      <i class="fas fa-paper-plane"></i> تواصل معنا
+    </a>
+  </div>
+
+</div>
+  
+
+<section id="about" class="hidden">
+<h2 class="section-title">نبذة عنا</h2>
+
+<p>
+شركة <strong>اجروفيت فارما</strong> متخصصة في توزيع الأدوية البيطرية،
+تقدم حلول علاجية موثوقة وخدمات احترافية بإشراف دكتور بيطري متخصص،
+لخدمة المزارع والعيادات بأعلى جودة.
+</p>
+
+</section>
+  
+
+<section id="services" class="hidden">
+<h2 class="section-title">خدماتنا</h2>
+
+<div class="cards">
+
+<div class="card">
+  <i class="fas fa-pills"></i><br><br>
+  توزيع الأدوية
+</div>
+
+<div class="card">
+  <i class="fas fa-user-md"></i><br><br>
+  استشارات بيطرية
+</div>
+
+<div class="card">
+  <i class="fas fa-truck"></i><br><br>
+  توريد مزارع
+</div>
+
+<div class="card">
+  <i class="fas fa-syringe"></i><br><br>
+  اللقاحات البيطرية
+</div>
+
+<div class="card">
+  <i class="fas fa-capsules"></i><br><br>
+  مستحضرات علاجية
+</div>
+
+<div class="card">
+  <i class="fas fa-warehouse"></i><br><br>
+  تخزين الأدوية
+</div>
+
+<div class="card">
+  <i class="fas fa-shipping-fast"></i><br><br>
+  شحن سريع
+</div>
+
+<div class="card">
+  <i class="fas fa-dna"></i><br><br>
+  تحاليل وتشخيص
+</div>
+
+<div class="card">
+  <i class="fas fa-leaf"></i><br><br>
+  منتجات طبيعية
+</div>
+
+</div>
+</section>
+  
+<section id="doctors" class="hidden">
+<h2 class="section-title">الدكاترة المسئولين</h2>
+
+<div class="doctors">
+
+<div class="doctor">
+<img src="Dr1.png">
+<h3>د/ محمد جمال العدوي</h3>
+<p>استشاري طب بيطري وخبير مزارع</p>
+</div>
+
+<div class="doctor">
+<img src="Dr2.png">
+<h3>د/ ابو صلاح</h3>
+<p>أخصائي تغذية وعلاج بيطري</p>
+</div>
+
+</div>
+</section>
+
+<section id="contact" class="hidden">
+
+  <h2 class="section-title">تواصل معنا</h2>
+
+  <!-- معلومات سريعة -->
+  <div class="contact-info">
+    <div class="info-box">
+      <i class="fas fa-phone"></i>
+      <span>01000000000</span>
+    </div>
+
+    <div class="info-box">
+      <i class="fas fa-envelope"></i>
+      <span>info@agrovet.com</span>
+    </div>
+  </div>
+
+  <!-- المنصات -->
+  <div class="contact-icons">
+
+    <a href="https://www.facebook.com/share/1PRZpWuVsJ/" target="_blank" class="contact-card facebook">
+      <i class="fab fa-facebook"></i>
+      <span>Facebook</span>
+    </a>
+
+    <a href="https://wa.me/201000000000" target="_blank" class="contact-card whatsapp">
+      <i class="fab fa-whatsapp"></i>
+      <span>WhatsApp</span>
+    </a>
+
+    <a href="https://agrovet.com" target="_blank" class="contact-card website">
+      <i class="fas fa-map-marker-alt"></i>
+      <span>Location</span>
+    </a>
+
+    <a href="mailto:info@agrovet.com" class="contact-card email">
+      <i class="fas fa-envelope"></i>
+      <span>Email</span>
+    </a>
+
+    <a href="tel:01000000000" class="contact-card phone">
+      <i class="fas fa-phone"></i>
+      <span>Call</span>
+    </a>
+
+  </div>
+
+</section>
+  
+
+<footer class="footer-pro">
+
+<p>© 2026 اجروفيت فارما</p>
+
+<div class="footer-dev">
+  <span>تم تطوير بواسطة</span>
+
+  <a href="https://website7-sandy.vercel.app/" target="_blank" class="dev-link">
+    <i class="fas fa-globe"></i>
+    Amr Ayman
+  </a>
+
+  <span>— جميع الحقوق محفوظة لفريق Global X</span>
+</div>
+
+</footer>
+
+<script>
+  
+
+// loader
+window.onload = function(){
+document.getElementById("loader").style.display="none";
+}
+
+// menu
+function toggleMenu(){
+let menu=document.getElementById("menu");
+menu.style.display=menu.style.display==="flex"?"none":"flex";
+}
+
+// navbar scroll
+let lastScroll=0;
+window.addEventListener("scroll",()=>{
+let current=window.pageYOffset;
+let nav=document.getElementById("navbar");
+
+if(current>lastScroll){
+nav.classList.add("hide");
+}else{
+nav.classList.remove("hide");
+}
+lastScroll=current;
+});
+
+// animation
+let elements=document.querySelectorAll(".hidden");
+window.addEventListener("scroll",()=>{
+elements.forEach(el=>{
+let pos=el.getBoundingClientRect().top;
+if(pos<window.innerHeight-100){
+el.classList.add("show");
+}
+});
+});
+
+</script>
+
+</body>
+</html>
